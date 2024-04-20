@@ -13,17 +13,19 @@ class TfliteModel extends StatefulWidget {
 }
 
 class _TfliteModelState extends State<TfliteModel> {
+  get model => null;
+
 
   void initState() {
     super.initState();
     loadModel();
   }
 
-  Future loadModel() {
+  Future loadModel() async {
     Tflite.close();
     Tflite.close();
-    String res;
-    res = await Tflite.loadModel(model: model)
+    String? res;
+    res = await Tflite.loadModel(model: model);
   }
 
   @override
