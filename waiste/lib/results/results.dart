@@ -29,8 +29,10 @@ class _ResultsPageState extends State<ResultsPage> {
       if (response.statusCode == 200) {
         // If the server returns a 200 OK response, parse the JSON response
         final jsonResponse = jsonDecode(response.body);
-        final List<Map<String, dynamic>> predictions = List.from(jsonResponse['predictions']);
-        final firstPrediction = predictions.isNotEmpty ? predictions.first : null;
+        final List<Map<String, dynamic>> predictions =
+            List.from(jsonResponse['predictions']);
+        final firstPrediction =
+            predictions.isNotEmpty ? predictions.first : null;
         return firstPrediction ?? {};
       } else {
         // If the server returns an error response, throw an exception
@@ -60,8 +62,10 @@ class _ResultsPageState extends State<ResultsPage> {
               // Display the first prediction received from the Flask server
               final prediction = snapshot.data ?? {};
               return ListTile(
-                title: Text('Class: ${prediction['class'] ?? 'N/A'}'),
-                subtitle: Text('Confidence: ${prediction['confidence'] ?? 'N/A'}'),
+                title: Text(
+                    'We predict it to be: ${prediction['class'] ?? 'N/A'}'),
+                subtitle: Text(
+                    'Confidence%: ${prediction['confidence'] * 100 ?? 'N/A'}'),
               );
             }
           },
