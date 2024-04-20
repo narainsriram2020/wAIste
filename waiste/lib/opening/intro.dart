@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:waiste/imageupload/imageupload.dart';
 
 class IntroPage extends StatelessWidget {
+  const IntroPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome'),
+        title: const Text('Welcome'),
       ),
       body: Center(
         child: ElevatedButton(
@@ -16,7 +18,7 @@ class IntroPage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ImageUploadPage()),
             );
           },
-          child: Text('Start'),
+          child: const Text('Start'),
         ),
       ),
     );
