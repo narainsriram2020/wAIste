@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:tflite/tflite.dart';
 
-<<<<<<< HEAD
 void main() {
   runApp(const TfliteModel());
 }
@@ -32,5 +33,3 @@ class _TfliteModelState extends State<TfliteModel> {
     return const Placeholder();
   }
 }
-=======
->>>>>>> refs/remotes/origin/main
