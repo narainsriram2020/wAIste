@@ -7,11 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-<<<<<<< HEAD
-	<string>Waiste</string>
-=======
 	<string>wAIste</string>
->>>>>>> refs/remotes/origin/main
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

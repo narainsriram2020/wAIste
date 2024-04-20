@@ -33,10 +33,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
     if (_selectedImage == null) {
       // Show error message if no image is selected
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Center(
             child: Text(
-              'No Image Selected!',
+              'No Image Selected!.',
               style: TextStyle(
                 color: Colors.white, // Text color
                 fontSize: 20, // Font size
