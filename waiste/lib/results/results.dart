@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ResultsPage extends StatefulWidget {
   final String imageBase64;
@@ -17,19 +17,28 @@ class _ResultsPageState extends State<ResultsPage> {
   Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
       final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'image': base64Image}),
+        Uri.parse(apiUrl + 'upload'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'image': base64Image,
+        }),
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        // If the server returns a 200 OK response, parse the JSON response
+        final jsonResponse = jsonDecode(response.body);
+        final List<Map<String, dynamic>> predictions = List.from(jsonResponse['predictions']);
+        final firstPrediction = predictions.isNotEmpty ? predictions.first : null;
+        return firstPrediction ?? {};
       } else {
-        throw Exception('Failed to load predictions');
+        // If the server returns an error response, throw an exception
+        throw Exception('Failed to get predictions: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error: $e');
-      rethrow;
+      // If an error occurs during the request, throw an exception
+      throw Exception('Failed to get predictions: $e');
     }
   }
 
@@ -48,7 +57,12 @@ class _ResultsPageState extends State<ResultsPage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return Text('Predictions: ${snapshot.data}');
+              // Display the first prediction received from the Flask server
+              final prediction = snapshot.data ?? {};
+              return ListTile(
+                title: Text('Class: ${prediction['class'] ?? 'N/A'}'),
+                subtitle: Text('Confidence: ${prediction['confidence'] ?? 'N/A'}'),
+              );
             }
           },
         ),
