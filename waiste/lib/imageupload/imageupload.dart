@@ -30,7 +30,27 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   }
 
   Future<void> continueToResults() async {
-    if (_selectedImage == null) return;
+    if (_selectedImage == null) {
+      // Show error message if no image is selected
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Center(
+            child: Text(
+              'No Image Selected!',
+              style: TextStyle(
+                color: Colors.white, // Text color
+                fontSize: 20, // Font size
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red, // Error message background color
+          behavior: SnackBarBehavior.floating, // Center the message
+        ),
+      );
+      return;
+    }
 
     // Encode the image as base64
     String base64Image = base64Encode(await _selectedImage!.readAsBytes());
