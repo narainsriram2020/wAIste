@@ -12,7 +12,7 @@ class ResultsPage extends StatefulWidget {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
-  String apiUrl = 'http://127.0.0.1:5000/';
+  String apiUrl = 'http://127.0.0.1:5000/'; // Update the API URL to use port 5001
 
   Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
