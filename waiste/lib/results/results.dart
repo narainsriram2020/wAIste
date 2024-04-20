@@ -12,12 +12,12 @@ class ResultsPage extends StatefulWidget {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
-  String apiUrl = 'http://127.0.0.1:5000/';
+  String apiUrl = 'http://127.0.0.1:5000/'; // Update the API URL to use port 5001
 
   Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
       final response = await http.post(
-        Uri.parse(apiUrl + 'upload'),
+        Uri.parse('${apiUrl}upload'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -48,14 +48,14 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Results'),
+        title: const Text('Results'),
       ),
       body: Center(
         child: FutureBuilder(
           future: getPredictions(widget.imageBase64),
           builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {

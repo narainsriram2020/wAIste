@@ -29,9 +29,9 @@ class IntroPage extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const ImageUploadPage()),
                 );
               },
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     "Start!",
                     style: TextStyle(fontSize: 24),
