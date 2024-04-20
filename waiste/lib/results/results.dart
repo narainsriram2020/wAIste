@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ResultsPage extends StatefulWidget {
   final String imageBase64;
@@ -12,54 +12,24 @@ class ResultsPage extends StatefulWidget {
 }
 
 class _ResultsPageState extends State<ResultsPage> {
-  String apiKey =
-      'sk-proj-ejzicAZGoL3ldgFa5sCFT3BlbkFJ1RjujWM1xwvBDlOQSNLI'; // Replace with your API key
-  String prompt =
-      'is this recycling, compost or trash'; // Replace with your prompt
-  String generatedResponse = '';
-  bool isLoading = true;
+  String apiUrl = 'http://127.0.0.1:5000/';
 
-  @override
-  void initState() {
-    super.initState();
-    // Call the function to fetch the response from ChatGPT API
-    getChatGPTResponse();
-  }
-
-  Future<void> getChatGPTResponse() async {
+  Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
       final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: jsonEncode({
-          'prompt': prompt,
-          'max_tokens': 1000, // Adjust as needed
-          'temperature': 0.4, // Adjust as needed
-          //'images': ['data:image/jpeg;base64,${widget.imageBase64}'],
-        }),
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'image': base64Image}),
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        setState(() {
-          generatedResponse = data['choices'][0]['text'];
-          isLoading = false;
-        });
+        return jsonDecode(response.body);
       } else {
-        setState(() {
-          generatedResponse = 'Error: Failed to get response from ChatGPT API';
-          isLoading = false;
-        });
+        throw Exception('Failed to load predictions');
       }
     } catch (e) {
-      setState(() {
-        generatedResponse = 'Error: $e';
-        isLoading = false;
-      });
-      debugPrint(generatedResponse);
+      debugPrint('Error: $e');
+      rethrow;
     }
   }
 
@@ -68,21 +38,21 @@ class _ResultsPageState extends State<ResultsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Results'),
-        backgroundColor: Colors.green, // Setting app bar color to green
       ),
       body: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  generatedResponse,
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+        child: FutureBuilder(
+          future: getPredictions(widget.imageBase64),
+          builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Text('Predictions: ${snapshot.data}');
+            }
+          },
+        ),
       ),
-      backgroundColor: Colors.white, // Background color
     );
   }
 }
