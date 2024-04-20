@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:waiste/results/results.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:waiste/results/results.dart'; // Assuming this is your ResultsPage
 
 class ImageUploadPage extends StatefulWidget {
   @override
@@ -26,6 +27,20 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
     }
   }
 
+  Future<void> continueToResults() async {
+    if (_selectedImage == null) return;
+
+    // Encode the image as base64
+    String base64Image = base64Encode(await _selectedImage!.readAsBytes());
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultsPage(imageBase64: base64Image),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,12 +59,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
               child: Text('Select Image'),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ResultsPage()),
-                );
-              },
+              onPressed: continueToResults,
               child: Text('Continue'),
             ),
           ],
