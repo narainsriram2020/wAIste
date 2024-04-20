@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:waiste/results/results.dart'; // Assuming this is your ResultsPage
 
 class ImageUploadPage extends StatefulWidget {
+  const ImageUploadPage({Key? key});
+
   @override
   _ImageUploadPageState createState() => _ImageUploadPageState();
 }
@@ -45,24 +47,58 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Image'),
+        title: const Text('Upload Image'),
+        backgroundColor: Colors.green, // Setting app bar color to green
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _selectedImage == null
-                ? Text('No image selected.')
-                : Image.file(_selectedImage!),
-            ElevatedButton(
-              onPressed: pickImage,
-              child: Text('Select Image'),
-            ),
-            ElevatedButton(
-              onPressed: continueToResults,
-              child: Text('Continue'),
-            ),
-          ],
+      body: Container(
+        color: Colors.green, // Setting background color to green
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _selectedImage == null
+                  ? const Text(
+                      'No image selected.',
+                      style: TextStyle(
+                          fontSize: 18, color: Colors.white), // Text color
+                    )
+                  : Image.file(_selectedImage!),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: pickImage,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.green,
+                  backgroundColor: Colors.white, // Button text color
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(20), // Button border radius
+                  ),
+                ),
+                child: const Text(
+                  'Select Image',
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: continueToResults,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.green,
+                  backgroundColor: Colors.white, // Button text color
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(20), // Button border radius
+                  ),
+                ),
+                child: const Text(
+                  'Continue',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

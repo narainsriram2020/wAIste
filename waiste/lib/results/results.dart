@@ -68,15 +68,21 @@ class _ResultsPageState extends State<ResultsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Results'),
+        backgroundColor: Colors.green, // Setting app bar color to green
       ),
       body: Center(
         child: isLoading
             ? CircularProgressIndicator()
             : Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(generatedResponse),
+                child: Text(
+                  generatedResponse,
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               ),
       ),
+      backgroundColor: Colors.white, // Background color
     );
   }
 }

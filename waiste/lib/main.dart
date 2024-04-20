@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'opening/intro.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Trash Classification App',
+      title: 'wAIste',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -2,23 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:waiste/imageupload/imageupload.dart';
 
 class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+  const IntroPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome'),
-      ),
+      backgroundColor: Colors.green,
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ImageUploadPage()),
-            );
-          },
-          child: const Text('Start'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/waistelogo.png',
+            ),
+            const SizedBox(height: 100),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.green,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ImageUploadPage()),
+                );
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    "Start!",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  SizedBox(width: 8), // Add some space between text and icon
+                  Icon(Icons.arrow_forward, size: 24),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
