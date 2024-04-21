@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ResultsPage extends StatelessWidget {
+class ResultsPage extends StatefulWidget {
   final String imageBase64;
 
   ResultsPage({required this.imageBase64});
 
-  String apiUrl = 'http://192.168.1.88:3000/';
+  @override
+  _ResultsPageState createState() => _ResultsPageState();
+}
+
+class _ResultsPageState extends State<ResultsPage> {
+  String apiUrl = 'http://127.0.0.1:5000/';
 
   Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
@@ -60,31 +65,10 @@ class ResultsPage extends StatelessWidget {
     }
   }
 
-  String getDescription(String predictedClass) {
-    switch (predictedClass.toUpperCase()) {
-      case 'BIODEGRADABLE':
-        return 'Biodegradable items are those that break down naturally in the environment. These items can be composted and turned into nutrient-rich soil.';
-      case 'CARDBOARD':
-        return 'Cardboard items are recyclable and can also be composted if they are not contaminated with food or liquids.';
-      case 'GLASS':
-        return 'Glass items are recyclable. Once recycled, glass can be melted down and used to make new products without losing quality.';
-      case 'METAL':
-        return 'Metal items such as aluminum and steel cans are highly recyclable. Recycling metal helps save energy and conserve natural resources.';
-      case 'PAPER':
-        return 'Paper items are recyclable and can also be composted if they are not coated with plastic or other non-biodegradable materials.';
-      case 'PLASTIC':
-        return 'Plastic items are recyclable, but many types of plastic are not accepted by recycling facilities. Check your local recycling guidelines for more information.';
-      case 'GARBAGE':
-        return 'Garbage items are non-recyclable and non-biodegradable waste that should be disposed of properly in a landfill.';
-      default:
-        return 'Unknown';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getPredictions(imageBase64),
+      future: getPredictions(widget.imageBase64),
       builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         Color appBarColor = Colors.green;
         Color screenColor = Colors.green;
@@ -92,9 +76,6 @@ class ResultsPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(
-                color: Colors.white,
-              ),
               title: Text(
                 'Results',
                 style: TextStyle(color: Colors.white),
@@ -108,9 +89,6 @@ class ResultsPage extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(
-                color: Colors.white,
-              ),
               title: Text(
                 'Results',
                 style: TextStyle(color: Colors.white),
@@ -125,7 +103,7 @@ class ResultsPage extends StatelessWidget {
             ),
           );
         } else {
-          // Display the prediction information
+          // Display the first prediction received from the Flask server
           final prediction = snapshot.data ?? {};
           if ((prediction['class'] ?? '') == 'METAL') {
             appBarColor = Color.fromARGB(255, 47, 51, 48);
@@ -145,60 +123,30 @@ class ResultsPage extends StatelessWidget {
             appBarColor = Color.fromARGB(255, 24, 25, 22);
             screenColor = Color.fromARGB(255, 24, 26, 23);
           }
-
-          String confidence = ((prediction['confidence'] ?? 0.0) * 100)
-              .toStringAsFixed(0); // Convert to percentage without decimals
-
           return Scaffold(
             appBar: AppBar(
               iconTheme: IconThemeData(
-                color: Colors.white,
-              ),
-              title: Text(
-                'Results',
-                style: TextStyle(color: Colors.white),
-              ),
+                  color: Colors.white), // Setting the icon color to white
+              title: Text('Results', style: TextStyle(color: Colors.white)),
               backgroundColor: appBarColor,
             ),
             backgroundColor: screenColor,
             body: Container(
               padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Predicted Category:',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Predicted Category:',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      String category = getCategory(prediction['class'] ?? '');
-                      String description =
-                          getDescription(prediction['class'] ?? '');
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(category),
-                            content: Text(description),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Text(
+                    SizedBox(height: 20),
+                    Text(
                       getCategory(prediction['class'] ?? ''),
                       style: TextStyle(
                         fontSize: 40,
@@ -206,67 +154,26 @@ class ResultsPage extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 40),
-                  Text(
-                    'Confidence:',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    '$confidence%',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {
-                      String category = getCategory(prediction['class'] ?? '');
-                      String description =
-                          getDescription(prediction['class'] ?? '');
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(category),
-                            content: Text(description),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: appBarColor,
-                      backgroundColor: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: Text(
-                      'More Info',
+                    SizedBox(height: 40),
+                    Text(
+                      'Confidence:',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    Text(
+                      '${(double.parse((prediction['confidence'] ?? 0.0).toStringAsFixed(4)) * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
