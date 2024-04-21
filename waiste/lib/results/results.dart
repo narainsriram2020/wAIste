@@ -59,7 +59,7 @@ class _ResultsPageState extends State<ResultsPage> {
       case 'PLASTIC':
         return 'Recycling';
       default:
-        return 'Unknown';
+        return 'Trash';
     }
   }
 
