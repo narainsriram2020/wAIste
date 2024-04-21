@@ -7,7 +7,7 @@ class ResultsPage extends StatelessWidget {
 
   ResultsPage({required this.imageBase64});
 
-  String apiUrl = 'http://127.0.0.1:5000/';
+  String apiUrl = 'https://f53jhkqh-5000.use.devtunnels.ms';
 
   Future<Map<String, dynamic>> getPredictions(String base64Image) async {
     try {
@@ -15,6 +15,8 @@ class ResultsPage extends StatelessWidget {
         Uri.parse(apiUrl + 'upload'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'X-Tunnel-Authorization':
+              'tunnel eyJhbGciOiJFUzI1NiIsImtpZCI6IjJENTIwNkFFNjVBOTQ5RTlBQTlDRUQ4QTU2M0QxRTBCQzYyRUVENjIiLCJ0eXAiOiJKV1QifQ.eyJjbHVzdGVySWQiOiJ1c2UiLCJ0dW5uZWxJZCI6ImZ1bi1wb25kLXY3dGJqYzYiLCJzY3AiOiJjb25uZWN0IiwiZXhwIjoxNzEzNzY3Mjg3LCJpc3MiOiJodHRwczovL3R1bm5lbHMuYXBpLnZpc3VhbHN0dWRpby5jb20vIiwibmJmIjoxNzEzNjc5OTg3fQ.dReKnu0xlz_AR8O1CuTP0fh7T-UYtl6C8ux3uipM0tJgzxZWDWHq9JjvaQ-QviJWGCUlSEsDYJLsGEQEF7H0hQ'
         },
         body: jsonEncode(<String, String>{
           'image': base64Image,
