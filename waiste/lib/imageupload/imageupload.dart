@@ -87,7 +87,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
                       style: TextStyle(
                           fontSize: 18, color: Colors.white), // Text color
                     )
-                  : Image.file(_selectedImage!),
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.file(_selectedImage!),
+                    ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: pickImage,
