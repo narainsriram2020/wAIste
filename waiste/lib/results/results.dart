@@ -29,8 +29,10 @@ class _ResultsPageState extends State<ResultsPage> {
       if (response.statusCode == 200) {
         // If the server returns a 200 OK response, parse the JSON response
         final jsonResponse = jsonDecode(response.body);
-        final List<Map<String, dynamic>> predictions = List.from(jsonResponse['predictions']);
-        final firstPrediction = predictions.isNotEmpty ? predictions.first : null;
+        final List<Map<String, dynamic>> predictions =
+            List.from(jsonResponse['predictions']);
+        final firstPrediction =
+            predictions.isNotEmpty ? predictions.first : null;
         return firstPrediction ?? {};
       } else {
         // If the server returns an error response, throw an exception
@@ -42,31 +44,135 @@ class _ResultsPageState extends State<ResultsPage> {
     }
   }
 
+  String getCategory(String predictedClass) {
+    switch (predictedClass) {
+      case 'BIODEGRADABLE':
+        return 'Compost';
+      case 'CARDBOARD':
+        return 'Compost and Recycling';
+      case 'GLASS':
+        return 'Recycling';
+      case 'METAL':
+        return 'Recycling';
+      case 'PAPER':
+        return 'Recycling and Compost';
+      case 'PLASTIC':
+        return 'Recycling';
+      default:
+        return 'Unknown';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Results'),
-      ),
-      body: Center(
-        child: FutureBuilder(
-          future: getPredictions(widget.imageBase64),
-          builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              // Display the first prediction received from the Flask server
-              final prediction = snapshot.data ?? {};
-              return ListTile(
-                title: Text('Class: ${prediction['class'] ?? 'N/A'}'),
-                subtitle: Text('Confidence: ${prediction['confidence'] ?? 'N/A'}'),
-              );
-            }
-          },
-        ),
-      ),
+    return FutureBuilder(
+      future: getPredictions(widget.imageBase64),
+      builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        Color appBarColor = Colors.green;
+        Color screenColor = Colors.green;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Results',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: appBarColor,
+            ),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Results',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: appBarColor,
+            ),
+            body: Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          );
+        } else {
+          // Display the first prediction received from the Flask server
+          final prediction = snapshot.data ?? {};
+          if ((prediction['class'] ?? '') == 'METAL') {
+            appBarColor = Color.fromARGB(255, 47, 51, 48);
+            screenColor = Color.fromARGB(255, 47, 51, 48);
+          } else if ((prediction['class'] ?? '') == 'PLASTIC') {
+            appBarColor = Color.fromARGB(255, 64, 104, 177);
+            screenColor = Color.fromARGB(255, 64, 104, 177);
+          } else if ((prediction['class'] ?? '') == 'CARDBOARD' ||
+              (prediction['class'] ?? '') == 'PAPER') {
+            appBarColor = Color.fromARGB(255, 102, 88, 43);
+            screenColor = Color.fromARGB(255, 102, 88, 43);
+          } else if ((prediction['class'] ?? '') == 'GLASS') {
+            appBarColor = Color.fromARGB(255, 178, 157, 232);
+            screenColor = Color.fromARGB(255, 178, 157, 232);
+          }
+          return Scaffold(
+            appBar: AppBar(
+              iconTheme: IconThemeData(
+                  color: Colors.white), // Setting the icon color to white
+              title: Text('Results', style: TextStyle(color: Colors.white)),
+              backgroundColor: appBarColor,
+            ),
+            backgroundColor: screenColor,
+            body: Container(
+              padding: EdgeInsets.all(20.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Predicted Category:',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      getCategory(prediction['class'] ?? ''),
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Text(
+                      'Confidence:',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      '${(double.parse((prediction['confidence'] ?? 0.0).toStringAsFixed(4)) * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

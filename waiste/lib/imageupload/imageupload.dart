@@ -67,7 +67,12 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Image'),
+        iconTheme: IconThemeData(
+            color: Colors.white), // Setting the icon color to white
+        title: const Text(
+          'Upload Image',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.green, // Setting app bar color to green
       ),
       body: Container(
