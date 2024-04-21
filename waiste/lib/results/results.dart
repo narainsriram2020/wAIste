@@ -61,7 +61,7 @@ class _ResultsPageState extends State<ResultsPage> {
       case 'GARBAGE':
         return 'Trash';
       default:
-        return 'Trash';
+        return 'Unknown';
     }
   }
 
@@ -118,8 +118,8 @@ class _ResultsPageState extends State<ResultsPage> {
           } else if ((prediction['class'] ?? '') == 'GLASS') {
             appBarColor = Color.fromARGB(255, 178, 157, 232);
             screenColor = Color.fromARGB(255, 178, 157, 232);
-          }
-          else if ((prediction['class'] ?? '').toString().toLowerCase() == 'garbage') {
+          } else if ((prediction['class'] ?? '').toString().toLowerCase() ==
+              'garbage') {
             appBarColor = Color.fromARGB(255, 24, 25, 22);
             screenColor = Color.fromARGB(255, 24, 26, 23);
           }
