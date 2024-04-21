@@ -45,7 +45,7 @@ class _ResultsPageState extends State<ResultsPage> {
   }
 
   String getCategory(String predictedClass) {
-    switch (predictedClass) {
+    switch (predictedClass.toUpperCase()) {
       case 'BIODEGRADABLE':
         return 'Compost';
       case 'CARDBOARD':
@@ -58,6 +58,8 @@ class _ResultsPageState extends State<ResultsPage> {
         return 'Recycling and Compost';
       case 'PLASTIC':
         return 'Recycling';
+      case 'GARBAGE':
+        return 'Trash';
       default:
         return 'Unknown';
     }
@@ -116,6 +118,10 @@ class _ResultsPageState extends State<ResultsPage> {
           } else if ((prediction['class'] ?? '') == 'GLASS') {
             appBarColor = Color.fromARGB(255, 178, 157, 232);
             screenColor = Color.fromARGB(255, 178, 157, 232);
+          }
+          else if ((prediction['class'] ?? '').toString().toLowerCase() == 'garbage') {
+            appBarColor = Color.fromARGB(255, 24, 25, 22);
+            screenColor = Color.fromARGB(255, 24, 26, 23);
           }
           return Scaffold(
             appBar: AppBar(
