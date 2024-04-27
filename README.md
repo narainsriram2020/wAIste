@@ -4,8 +4,8 @@
 
 ## Key Features:
 
-- **AI-Powered Analysis:** Utilizes advanced machine learning algorithms to accurately identify
+- **AI-Powered Analysis:** Utilizes advanced machine learning algorithms to accurately identify and categorize waste.
 
+[![wAIste Demo](https://img.youtube.com/vi/ZyRgfsvGNfk/0.jpg)](https://youtu.be/ZyRgfsvGNfk)
 
-
-https://youtu.be/ZyRgfsvGNfk
+Check out the [wAIste Demo](https://youtu.be/ZyRgfsvGNfk) to see the app in action!
