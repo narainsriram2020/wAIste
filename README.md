@@ -4,7 +4,11 @@
 
 ## Key Features:
 
-- **AI-Powered Analysis:** Utilizes two different machine learning models to accurately identify and categorize waste.
+- **AI-Powered Analysis:** Utilizes two different machine learning models to accurately identify and categorize waste. The first model, for general waste categorization, classifies waste items into categories such as biodegradable, cardboard, glass, metal, paper, and plastic, providing users with detailed insights into the composition of their waste. The second model, for advanced garbage detection, identifies the presence of garbage in images and provides bounding boxes and confidence scores for detected garbage items. By combining the capabilities of these two models, wAIste offers comprehensive waste management solutions tailored to individual user needs.
+
+- **Real-time Recommendations:** Provides real-time recommendations for proper waste disposal methods based on AI analysis. Users receive instant feedback on whether an item can be recycled, composted, or disposed of in a landfill, enabling them to make environmentally conscious decisions on the spot.
+
+- **User-Friendly Interface:** Features an intuitive and user-friendly interface designed for seamless navigation and ease of use. Users can simply capture an image of their waste item within the app and receive immediate recommendations, making waste management quick and effortless.
 
 [![wAIste Demo](https://img.youtube.com/vi/ZyRgfsvGNfk/0.jpg)](https://youtu.be/ZyRgfsvGNfk)
 
