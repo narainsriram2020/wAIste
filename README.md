@@ -9,3 +9,7 @@
 [![wAIste Demo](https://img.youtube.com/vi/ZyRgfsvGNfk/0.jpg)](https://youtu.be/ZyRgfsvGNfk)
 
 Check out the [wAIste Demo](https://youtu.be/ZyRgfsvGNfk) to see the app in action!
+
+## Flask Server:
+
+For the backend infrastructure, wAIste employs a Flask server to handle image processing and AI model inference. The Flask server, hosted at [wAIste Flask Server](https://github.com/aluthra23/wAIste_flask_server), acts as the backend API for the mobile application. It utilizes the Roboflow platform's inference SDK to integrate with machine learning models for waste categorization and garbage detection. The Flask server enables seamless communication between the frontend mobile app and the AI models, ensuring efficient waste management recommendations for users.
